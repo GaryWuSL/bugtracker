@@ -1,0 +1,69 @@
+<ng-template #content let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-basic-title">{{ModalTitle}}</h2>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+      </div>
+      <div class="modal-body">
+          <app-add-edit-followup [followup]="followup"></app-add-edit-followup>
+      </div>
+    </div>
+  </ng-template>
+
+<h1 class="mb-4"><strong>Ticket# {{ticket.TicketId}}</strong></h1>
+
+<mat-grid-list cols="6"  rowHeight="65px">
+    <mat-grid-tile [colspan]="5" [rowspan]="1"><label class="field-title">Title:</label> <span class="form-control">{{ticket.Title}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1"><label class="field-title">Status:</label> <span class="form-control {{this.statusColor}} text-white">{{ticket.StatusName}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="4"><img class="ticket-image" src="{{ticket.ImageFilePath}}" /></mat-grid-tile>
+    <mat-grid-tile [colspan]="4" [rowspan]="1"><label class="field-title" >Organization:</label> <span class="form-control">{{ticket.Organization}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Project:</label> <span class="form-control">{{ticket.Project}}</span></mat-grid-tile>        
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Last&nbsp;Update:</label> <span class="form-control">{{ticket.UpdateDate}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Module:</label> <span class="form-control">{{ticket.AppModule}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Version:</label> <span class="form-control">{{ticket.AppVersion}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Priority:</label> <span class="form-control">{{ticket.PriorityName}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1"><label class="field-title">Assign&nbsp;To:</label> <span class="form-control">{{ticket.AssignUserName}}</span></mat-grid-tile>
+    <mat-grid-tile [colspan]="6" [rowspan]="2"><label class="field-title">Bug&nbsp;Description:</label> <textarea class="form-control" row="3" readonly>{{ticket.FullDescription}}</textarea></mat-grid-tile>
+</mat-grid-list>
+
+<div class="mb-3">
+    <button class="btn btn-outline-primary" (click)="addClick();open(content);">Add Follow Up</button>
+  </div>
+  
+  <table class="table table-striped">
+      <thead>
+          <tr class="mb-3 table-primary">
+              <th class="col-4">Title / Description</th>
+              <th class="col-1">Status</th>  
+              <th class="col-1">Priority</th>  
+              <th class="col-1">Assign To</th>
+              <th class="col-2">Last Update</th>  
+              <th class="col-1">Update By</th>
+              <th class="col-2">Options</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let dataItem of FollowupList" class="mb-2">
+              <td class="col-4">{{dataItem.Title}}<br />{{dataItem.FullDescription}}</td>
+              <td class="col-1">{{dataItem.StatusName}}</td>
+              <td class="col-1">{{dataItem.PriorityName}}</td>
+              <td class="col-1">{{dataItem.AssignUserName}}</td>
+              <td class="col-2">{{dataItem.UpdateDate}}</td>
+              <td class="col-1">{{dataItem.UpdateUserName}}</td>
+              <td class="col-2">
+                  <button type="button" class="btn btn-light mr-1" data-toggle="modal" data-target="#TicketModal"
+                   (click)="editClick(dataItem);open(content);" data-backdrop="static" data-keyboard="false" *ngIf="(dataItem.CreateUserId===user.UserId || user.UserId===1)">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                    </svg>
+                  </button>
+                  <button type="button" class="btn btn-light mr-1" (click)="deleteClick(dataItem)" *ngIf="(dataItem.CreateUserId===user.UserId || user.UserId===1)">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                    </svg>
+                  </button>
+              </td>
+          </tr>
+      </tbody>
+  </table>  

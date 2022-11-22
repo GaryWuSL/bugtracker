@@ -1,0 +1,47 @@
+<h1 class="mb-3"><strong>Help</strong></h1>
+<div class="container">
+  <p>Please follow below steps to setup database and import demo data.</p>
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Step 1</ng-template>
+      <ng-template matStepContent>
+        <h2>Setup Database</h2>
+        <p>Please notice that Database named <strong>{{dbname}}</strong> will be created. 
+          If this already exists, database should be removed then create a new instance.</p>
+        <div class="mb-3">
+          <button [disabled]="creating" class="btn btn-primary" (click)="createDB();">
+            <span *ngIf="creating" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Now
+          </button>&nbsp;&nbsp;
+          <span><strong>{{createResult}}</strong></span>
+        </div>
+        <button mat-button matStepperNext>Next</button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Step 2</ng-template>
+      <ng-template matStepContent>
+        <h2>Import demo data</h2>
+        <p>* Please be caution all the existing data will be deleted and restore to the inital demo data.</p>
+        <div class="mb-3">
+          <button [disabled]="importing" class="btn btn-primary mr-3" (click)="importData();">
+            <span *ngIf="importing" class="spinner-border spinner-border-sm mr-1"></span>
+            Import Now
+          </button>&nbsp;&nbsp;
+          <span><strong>{{importResult}}</strong></span>
+        </div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Step 3</ng-template>
+      <ng-template matStepContent>
+        <h2>Well done</h2>
+        <p>Please click below link to login</p>
+        <button mat-button (click)="logoutClick()">Login</button><button mat-button matStepperPrevious>Back</button>  
+      </ng-template>
+      
+    </mat-step>
+  </mat-stepper>
+</div>

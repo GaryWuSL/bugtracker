@@ -1,0 +1,10 @@
+.dashboard-card {
+    max-width: 400px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+.section {
+    margin-top: -5px;
+}
+

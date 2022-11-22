@@ -1,0 +1,68 @@
+<form #ngUser="ngForm" name="form" (ngSubmit)="onSubmit(ngUser)" *ngIf="!isSuccessful" novalidate>
+
+    <div class="form-group mb-3">
+        <label for="UserName">User Name</label>
+        <input type="text" class="form-control" name="UserName" [(ngModel)]="userRequest.UserName" required
+            #UserName="ngModel" [ngClass]="{ 'is-invalid': ngUser.submitted && UserName.errors }"/>
+        <div class="invalid-feedback" *ngIf="ngUser.submitted && UserName.errors">
+            <div *ngIf="UserName.errors?.required">User Name is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="UserDescription">User Description</label>
+        <textarea class="form-control" name="UserDescription" [(ngModel)]="userRequest.UserDescription" 
+        #UserDescription="ngModel" rows="4"></textarea>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="Password">Password</label>
+        <input type="password" class="form-control" name="Password" [(ngModel)]="userRequest.Password" required
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{7,}" #Password="ngModel" [ngClass]="{ 'is-invalid': ngUser.submitted && Password.errors }"/>
+        <div class="invalid-feedback" *ngIf="ngUser.submitted && Password.errors">
+            <div *ngIf="Password.errors['required']">Password is required</div>
+            <div *ngIf="Password.errors['pattern']"> Enter a strong password. At least one number and one uppercase
+            and lowercase letter, and at least 8 or more characters.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="ConfirmPassword">Confirm Password</label>
+        <input type="password" class="form-control" name="ConfirmPassword"
+            [(ngModel)]="userRequest.ConfirmPassword" required pattern="{{ Password.value }}"
+            #ConfirmPassword="ngModel" [ngClass]="{ 'is-invalid': ngUser.submitted && ConfirmPassword.errors }"/>
+        <div class="invalid-feedback" *ngIf="ngUser.submitted && ConfirmPassword.errors">
+            <div *ngIf="ConfirmPassword.errors['required']">Confirm Password is required</div>
+            <div *ngIf="ConfirmPassword.errors['pattern']">Password not match, input the same password again.</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="EmailAddress">Email</label>
+        <input type="text" class="form-control" name="EmailAddress" [(ngModel)]="userRequest.EmailAddress" email required
+            #EmailAddress="ngModel" [ngClass]="{ 'is-invalid': ngUser.submitted && EmailAddress.errors }"/>
+        <div class="invalid-feedback" *ngIf="ngUser.submitted && EmailAddress.errors">
+            <div *ngIf="EmailAddress.errors['required']">Email Address is required</div>
+            <div *ngIf="EmailAddress.errors['email']">Invalid Email</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="ml-3 bd-highlight">
+            <!-- <img [src]=PhotoFilePath height="250px;" width="200px;"> -->
+            <label class="mt-2">User Photo</label>
+            <input type="file" class="form-control" requiredFileType="image/jpeg" [(ngModel)]="userRequest.PhotoFilePath"
+             (change)="onChange($event)" #PhotoFilePath="ngModel" />
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input class="btn btn-primary btn-block" type="submit" value="Save" />
+    </div>
+    <div class="alert alert-warning" *ngIf="ngUser.submitted && isSaveFailed">
+        {{ errorMessage }}
+    </div>
+</form>
+<div class="alert alert-success" *ngIf="isSuccessful"></div>
+
+

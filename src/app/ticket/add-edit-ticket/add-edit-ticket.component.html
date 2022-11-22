@@ -1,0 +1,101 @@
+<form #ngTicket="ngForm" name="form" (ngSubmit)="onSubmit(ngTicket)" *ngIf="!isSuccessful" novalidate>
+
+    <div class="form-group mb-3">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" name="Title" [(ngModel)]="ticketRequest.Title" required
+            #Title="ngModel" [ngClass]="{ 'is-invalid': ngTicket.submitted && Title.errors }"/>
+        <div class="invalid-feedback" *ngIf="ngTicket.submitted && Title.errors">
+            <div *ngIf="Title.errors?.required">Title is required</div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="FullDescription">Bug Description</label>
+        <textarea class="form-control" name="FullDescription" [(ngModel)]="ticketRequest.FullDescription" required
+        #FullDescription="ngModel" rows="4" [ngClass]="{ 'is-invalid': ngTicket.submitted && FullDescription.errors }"></textarea>
+        <div class="invalid-feedback" *ngIf="ngTicket.submitted && FullDescription.errors">
+            <div *ngIf="FullDescription.errors?.required">Bug Description is required</div>
+        </div>
+    </div>
+	
+	<div class="form-group mb-3">
+        <label for="Organization">Organization</label>
+        <input type="text" class="form-control" name="Organization" [(ngModel)]="ticketRequest.Organization"
+            #Organization="ngModel" />
+    </div>
+	
+	<div class="form-group mb-3">
+        <label for="Project">Project</label>
+        <input type="text" class="form-control" name="Project" [(ngModel)]="ticketRequest.Project" 
+            #Project="ngModel" />
+    </div>
+	
+	<div class="form-group mb-3">
+        <label for="AppModule">Application Module</label>
+        <input type="text" class="form-control" name="AppModule" [(ngModel)]="ticketRequest.AppModule"
+            #AppModule="ngModel" />
+    </div>
+	
+	<div class="form-group mb-3">
+        <label for="AppVersion">Version</label>
+        <input type="text" class="form-control" name="AppVersion" [(ngModel)]="ticketRequest.AppVersion" 
+            #AppVersion="ngModel" />
+    </div>
+	
+	<div class="form-group mb-3">
+		<label for="StatusId">Status</label>
+        <select class="form-control" [(ngModel)]="ticketRequest.StatusId" name="StatusId" #StatusId="ngModel"
+        [ngClass]="{ 'is-invalid': ngTicket.submitted && StatusId.value == 0}">
+            <option value=0>--Select--</option>
+            <option *ngFor="let status of StatusList" value={{status.StatusId}}>
+                {{status.StatusName}}
+            </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="ngTicket.submitted && StatusId.value == 0">
+            <div>Please pick any Status</div>
+        </div>
+	</div>
+	
+	<div class="form-group mb-3">
+		<label for="PriorityId">Priority</label>
+        <select class="form-control" [(ngModel)]="ticketRequest.PriorityId" name="PriorityId" #PriorityId="ngModel"
+        [ngClass]="{ 'is-invalid': ngTicket.submitted && PriorityId.value == 0}">
+            <option value=0>--Select--</option>
+            <option *ngFor="let priority of PriorityList" value={{priority.PriorityId}}>
+                {{priority.PriorityName}}
+            </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="ngTicket.submitted && PriorityId.value == 0">
+            <div>Please pick any Priority</div>
+        </div>
+	</div>
+	
+	<div class="form-group mb-3">
+		<label for="AssignUserId">Assign To</label>
+        <select class="form-control" [(ngModel)]="ticketRequest.AssignUserId" name="AssignUserId" #AssignUserId="ngModel"
+        [ngClass]="{ 'is-invalid': ngTicket.submitted && AssignUserId.value == 0}">
+            <option value=0>--Select--</option>
+            <option *ngFor="let user of UserList" value={{user.UserId}}>
+                {{user.UserName}}
+            </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="ngTicket.submitted && AssignUserId.value == 0">
+            <div>Please pick any user to follow up</div>
+        </div>
+	</div>
+
+    <div class="form-group mb-3">
+        <div class="ml-3 bd-highlight">
+            <label class="mt-2">Screen Capture</label>
+            <input type="file" class="form-control" requiredFileType="image/jpeg" [(ngModel)]="ticketRequest.ImageFilePath"
+             (change)="onFileChange($event)" #ImageFilePath="ngModel" />
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <input class="btn btn-primary btn-block" type="submit" value="Save" />
+    </div>
+    <div class="alert alert-warning" *ngIf="ngTicket.submitted && isSaveFailed">
+        {{ errorMessage }}
+    </div>
+</form>

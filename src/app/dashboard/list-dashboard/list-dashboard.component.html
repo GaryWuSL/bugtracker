@@ -1,0 +1,19 @@
+<span *ngFor="let item of TicketSummary; trackBy: trackByUserName">
+    <mat-card class="dashboard-card mt-3 mb-3"  *ngIf="displayUserName(item)">
+        <mat-card-header>
+        <div mat-card-avatar style="background-image: url('{{item.PhotoFilePath}}');
+        background-size: cover;" ></div>
+        <mat-card-title>{{item.AssignUserName}}</mat-card-title>
+        <mat-card-subtitle>{{item.UserDescription}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content></mat-card-content>
+        <mat-card-actions *ngIf="isShowButtons==true">
+            <span *ngFor="let itemUser of TicketSummary">
+            <button class="me-3" *ngIf="displayUserStatus(itemUser.AssignUserName, item.AssignUserName)" class="{{getColor(itemUser.StatusId)}} text-white"
+            mat-button matBadge="{{itemUser.TicketCount}}" matBadgePosition="after" matBadgeColor="accent" 
+            (click)="onButtonClick(itemUser)">{{itemUser.StatusName}}</button>
+            </span>
+        </mat-card-actions>
+    </mat-card>
+</span>
+

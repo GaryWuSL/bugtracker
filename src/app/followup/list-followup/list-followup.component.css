@@ -1,0 +1,18 @@
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.field-title {
+    font-size: 1.1rem;
+    margin-right: 5px;
+    margin-left: 10px;
+}
+
+.ticket-image {
+    width:400px; 
+    height:400px;
+}
+
